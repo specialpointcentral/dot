@@ -1,0 +1,12 @@
+secrets.zsh
+*.secrets
+*.secret
+.env
+.env.*
+
+# Codex auth (contains API keys)
+codex/auth.json
+
+# OS
+.DS_Store
+Thumbs.db

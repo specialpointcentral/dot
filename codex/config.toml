@@ -1,0 +1,24 @@
+model_provider = "crs"
+model = "gpt-5.2-codex"
+model_reasoning_effort = "medium"
+model_reasoning_summary = "detailed"
+model_verbosity = "high"
+disable_response_storage = true
+preferred_auth_method = "apikey"
+
+[sandbox_workspace_write]
+network_access = true
+
+[model_providers.crs]
+name = "crs"
+# Set your base_url in ~/.codex/auth.json or environment variables
+base_url = "https://your-api-endpoint/openai"
+wire_api = "responses"
+requires_openai_auth = true
+
+[notice]
+hide_gpt5_1_migration_prompt = true
+"hide_gpt-5.1-codex-max_migration_prompt" = true
+
+[notice.model_migrations]
+"gpt-5.2" = "gpt-5.2-codex"

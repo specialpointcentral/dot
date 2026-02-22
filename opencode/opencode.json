@@ -1,0 +1,18 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "oh-my-opencode"
+  ],
+  "provider": {
+    "anthropic": {
+      "options": {
+        "baseURL": "https://your-api-endpoint/api/v1"
+      }
+    },
+    "openai": {
+      "options": {
+        "baseURL": "https://your-api-endpoint/openai"
+      }
+    }
+  }
+}
