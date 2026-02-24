@@ -49,27 +49,26 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
   ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ```
 
-#### [自动] 备份已有配置并复制文件
+#### [手动] 参看模板并合并 Shell 配置（建议由 AI 协助）
 
-以下命令会将已有的 Shell 配置文件备份到 `~/.dot-backup/`，然后从仓库复制新的配置文件到目标位置。
+考虑到不同系统与已有配置差异较大，这里不建议直接 `cp` 覆盖。建议先备份，再以仓库文件为**参看模板**逐项合并到本机配置。
 
 ```bash
 mkdir -p ~/.dot-backup
-for f in ~/.zshrc ~/.zshenv ~/.zprofile ~/.p10k.zsh; do
+for f in ~/.zshrc ~/.p10k.zsh; do
   [[ -e "$f" && ! -L "$f" ]] && mv "$f" ~/.dot-backup/
   [[ -L "$f" ]] && rm "$f"
 done
-
-cp "$DOT_DIR/shell/zshrc"    ~/.zshrc
-cp "$DOT_DIR/shell/zshenv"   ~/.zshenv
-cp "$DOT_DIR/shell/zprofile" ~/.zprofile
-cp "$DOT_DIR/shell/p10k.zsh" ~/.p10k.zsh
 ```
+
+参看文件：
+- `"$DOT_DIR/shell/zshrc"` → 目标 `~/.zshrc`
+- `"$DOT_DIR/shell/p10k.zsh"` → 目标 `~/.p10k.zsh`
 
 #### [检查] 确认文件已就位
 
 ```bash
-ls -la ~/.zshrc ~/.zshenv ~/.zprofile ~/.p10k.zsh
+ls -la ~/.zshrc ~/.p10k.zsh
 ```
 
 ### Step 3: 安装 zsh 插件
@@ -400,8 +399,6 @@ dot/
 ├── AGENTS.md              # AI Agent 执行指引
 ├── shell/
 │   ├── zshrc              # Zsh 主配置
-│   ├── zshenv             # Zsh 环境变量
-│   ├── zprofile           # Zsh profile
 │   ├── p10k.zsh           # Powerlevel10k 主题配置
 │   └── secrets.zsh.example
 ├── tmux/
