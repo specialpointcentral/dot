@@ -118,8 +118,9 @@ fi
 # --- OpenCode ---
 log "--- OpenCode ---"
 mkdir -p "$HOME/.config/opencode"
-link_file "$DOT_DIR/opencode/opencode.json"        "$HOME/.config/opencode/opencode.json"
-link_file "$DOT_DIR/opencode/oh-my-opencode.json"   "$HOME/.config/opencode/oh-my-opencode.json"
+link_file "$DOT_DIR/opencode/opencode.json"              "$HOME/.config/opencode/opencode.json"
+link_file "$DOT_DIR/opencode/oh-my-opencode-slim.json"   "$HOME/.config/opencode/oh-my-opencode-slim.json"
+log "Install oh-my-opencode-slim: bunx oh-my-opencode-slim@latest install"
 
 # --- Done ---
 echo ""

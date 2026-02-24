@@ -11,7 +11,7 @@
 | neovim | 见下方单独说明 | LazyVim starter |
 | claude | `claude/` | Claude CLI 设置 |
 | codex | `codex/` | Codex CLI 设置 |
-| opencode | `opencode/` | OpenCode + oh-my-opencode 设置 |
+| opencode | `opencode/` | OpenCode + oh-my-opencode-slim 设置 |
 
 ## 快速开始
 
@@ -28,6 +28,8 @@ chmod +x install.sh
 vim ~/.secrets.zsh       # Shell 环境变量（API keys）
 vim ~/.codex/auth.json   # Codex API key
 ```
+
+完整环境恢复步骤见 `AGENTS.md`。
 
 ## 工具安装指南
 
@@ -87,6 +89,12 @@ nvim
 | codex | `npm install -g @openai/codex` | OpenAI Codex CLI |
 | opencode | `npm install -g opencode-ai` | OpenCode CLI |
 
+OpenCode 安装后再执行：
+
+```bash
+bunx oh-my-opencode-slim@latest install
+```
+
 ### 可选工具
 
 | 工具 | macOS | Ubuntu/Debian | 说明 |
@@ -130,5 +138,5 @@ dot/
 │   └── auth.json.example
 └── opencode/
     ├── opencode.json
-    └── oh-my-opencode.json
+    └── oh-my-opencode-slim.json
 ```

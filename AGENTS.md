@@ -229,8 +229,8 @@ npm install -g opencode-ai
 ```
 
 ```bash
-# [自动] 安装 oh-my-opencode 插件
-cd ~/.config/opencode && npm install
+# [自动] 安装 oh-my-opencode-slim 插件
+bunx oh-my-opencode-slim@latest install
 ```
 
 ```bash
