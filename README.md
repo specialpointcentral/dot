@@ -355,6 +355,11 @@ cp "$DOT_DIR/opencode/opencode.json"             ~/.config/opencode/opencode.jso
 cp "$DOT_DIR/opencode/oh-my-opencode-slim.json"  ~/.config/opencode/oh-my-opencode-slim.json
 ```
 
+#### [手动] 修改 opencode.json 中的服务地址
+
+`~/.config/opencode/opencode.json` 中的 `baseURL` 默认是 `https://your-api-endpoint/xxx`，请将其中的 `your-api-endpoint` 替换为你自己的实际地址（保持 `https://` 与路径不变，按你的真实地址调整）。
+如果由 Agent 执行安装，请先提供你的实际地址，Agent 会代为修改。
+
 #### [自动] 安装 oh-my-opencode-slim 插件
 
 ```bash
@@ -368,6 +373,18 @@ npx oh-my-opencode-slim@latest install
 ```bash
 ls -la ~/.config/opencode/opencode.json ~/.config/opencode/oh-my-opencode-slim.json
 ```
+
+### Step 3: OpenCode 授权
+
+#### [手动] 执行授权命令
+
+```bash
+opencode auth
+```
+
+请完成以下授权与配置：
+- GitHub 授权
+- 填写 OpenAI Key 与 Claude Key
 
 ---
 
