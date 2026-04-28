@@ -1,7 +1,7 @@
 {
-  "preset": "openai",
+  "preset": "powerful",
   "presets": {
-    "openai": {
+    "powerful": {
       "orchestrator": {
         "model": "openai/gpt-5.5",
         "variant": "high",
@@ -55,10 +55,48 @@
           "*"
         ],
         "mcps": []
+      },
+      "council": {
+        "model": "openai/gpt-5.5",
+        "variant": "high",
+        "skills": [
+          "*"
+        ],
+        "mcps": []
       }
     }
   },
   "balanceProviderUsage": false,
+  "council": {
+    "default_preset": "balanced",
+    "timeout": 300000,
+    "councillor_execution_mode": "parallel",
+    "councillor_retries": 3,
+    "presets": {
+      "balanced": {
+        "correctness": {
+          "model": "openai/gpt-5.5",
+          "variant": "high",
+          "prompt": "Focus on correctness, hidden bugs, edge cases, failure modes, and whether the answer actually satisfies the user's request."
+        },
+        "architect": {
+          "model": "anthropic/claude-opus-4-7",
+          "variant": "high",
+          "prompt": "Focus on architecture, maintainability, abstraction boundaries, long-term design, and systemic trade-offs."
+        },
+        "implementer": {
+          "model": "openai/gpt-5.4",
+          "variant": "xhigh",
+          "prompt": "Focus on practical implementation details, developer experience, integration risks, and whether the solution is actionable."
+        },
+        "skeptic": {
+          "model": "anthropic/claude-sonnet-4-6",
+          "variant": "high",
+          "prompt": "Challenge assumptions, identify overengineering, point out simpler alternatives, and flag uncertainty."
+        }
+      }
+    }
+  },
   "fallback": {
     "enabled": true,
     "timeoutMs": 15000,
