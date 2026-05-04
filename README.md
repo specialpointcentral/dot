@@ -236,6 +236,60 @@ npm --version
 
 ---
 
+## 安装 Skills（Agent 扩展）
+
+本仓库将 agent skills 的统一安装位置设为 `~/.agents/skills`（注意是 `agents` 复数）。当前技能来源和迁移说明见 `skills/README.md`。
+
+### Step 1: 创建 Skills 目录
+
+#### [自动] 创建统一落点
+
+```bash
+mkdir -p ~/.agents/skills
+```
+
+### Step 2: 安装常用 Skills
+
+#### [手动] 按需安装 skills
+
+参考 `"$DOT_DIR/skills/README.md"` 安装以下 skills：
+
+- `agent-browser` — 浏览器自动化、网页测试、Electron 自动化
+- `simplify` — 简化和整理最近修改的代码
+- `obsidian-cli` — 操作 Obsidian vault
+- `document-SKILLs` — Word / PDF / PPTX / XLSX 处理
+
+建议将实际技能安装到 `~/.agents/skills`，与当前机器保持一致。`document-SKILLs` 可以直接 clone 到 `~/.agents/skills/document-SKILLs`，其它单文件 skills 放到各自目录的 `SKILL.md`。
+
+#### [手动] 处理 Claude Code / Codex 兼容性
+
+如果当前 Claude Code / Codex 版本不能读取 `~/.agents/skills`，不要复制多份文件；将 `~/.agents/skills` 作为源目录，再用符号链接映射到客户端自己的默认目录。
+
+常见映射方式：
+
+```bash
+mkdir -p ~/.claude/skills ~/.codex/skills
+for s in agent-browser simplify obsidian-cli; do
+  ln -snf ~/.agents/skills/$s ~/.claude/skills/$s
+  ln -snf ~/.agents/skills/$s ~/.codex/skills/$s
+done
+
+for s in docx pdf pptx xlsx; do
+  ln -snf ~/.agents/skills/document-SKILLs/$s ~/.claude/skills/$s
+  ln -snf ~/.agents/skills/document-SKILLs/$s ~/.codex/skills/$s
+done
+```
+
+`document-SKILLs` 需要按 `docx`、`pdf`、`pptx`、`xlsx` 分别链接，避免客户端只扫描一层 skill 目录时读不到。
+
+#### [检查] 确认 skills 已就位
+
+```bash
+find ~/.agents/skills -maxdepth 4 -name SKILL.md -print
+```
+
+---
+
 ## 安装 Claude
 
 ### Step 1: 安装 Claude CLI
@@ -355,10 +409,17 @@ cp "$DOT_DIR/opencode/opencode.json"             ~/.config/opencode/opencode.jso
 cp "$DOT_DIR/opencode/oh-my-opencode-slim.json"  ~/.config/opencode/oh-my-opencode-slim.json
 ```
 
-#### [手动] 修改 opencode.json 中的服务地址
+#### [手动] 修改 opencode.json 中的服务地址和 API key
 
-`~/.config/opencode/opencode.json` 中的 `baseURL` 默认是 `https://your-api-endpoint/xxx`，请将其中的 `your-api-endpoint` 替换为你自己的实际地址（保持 `https://` 与路径不变，按你的真实地址调整）。
-如果由 Agent 执行安装，请先提供你的实际地址，Agent 会代为修改。
+`~/.config/opencode/opencode.json` 中的 `baseURL` 和 `apiKey` 是占位符，请按实际服务配置替换：
+
+- `provider.anthropic.options.baseURL` 默认是 `https://your-api-endpoint/v1`
+- `provider.openai.options.baseURL` 默认是 `https://your-api-endpoint/`
+- `provider.anthropic.options.apiKey` 默认是 `sk-xxxxxxxxxx`
+- `provider.openai.options.apiKey` 默认是 `sk-xxxxxxxxxx`
+
+请将 `your-api-endpoint` 替换为你的实际服务地址，并将 `sk-xxxxxxxxxx` 替换为真实 API key。不要将真实 API key 提交到仓库。
+如果由 Agent 执行安装，请先提供你的实际地址和 API key，Agent 会代为修改，并避免在终端输出、对话回复中显示密钥明文。
 
 #### [自动] 安装 oh-my-opencode-slim 插件
 
@@ -426,6 +487,8 @@ dot/
 ├── codex/
 │   ├── config.toml
 │   └── auth.json.example
+├── skills/
+│   └── README.md           # Agent skills 来源和安装说明
 └── opencode/
     ├── opencode.json
     └── oh-my-opencode-slim.json

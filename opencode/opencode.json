@@ -6,12 +6,14 @@
   "provider": {
     "anthropic": {
       "options": {
-        "baseURL": "https://your-api-endpoint/api/v1"
+        "baseURL": "https://your-api-endpoint/v1",
+        "apiKey": "sk-xxxxxxxxxx"
       }
     },
     "openai": {
       "options": {
-        "baseURL": "https://your-api-endpoint/openai"
+        "baseURL": "https://your-api-endpoint/",
+        "apiKey": "sk-xxxxxxxxxx"
       }
     }
   }
