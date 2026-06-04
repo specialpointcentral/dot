@@ -156,12 +156,23 @@ tmux -V
 
 ### Step 2: 配置 tmux
 
+#### [自动] 安装 TPM（Tmux Plugin Manager）
+
+```bash
+if [[ ! -d ~/.tmux/plugins/tpm ]]; then
+  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+```
+
 #### [自动] 备份已有配置并复制文件
 
 ```bash
 mkdir -p ~/.dot-backup
+mkdir -p ~/.tmux/scripts
 [[ -e ~/.tmux.conf && ! -L ~/.tmux.conf ]] && mv ~/.tmux.conf ~/.dot-backup/
 [[ -L ~/.tmux.conf ]] && rm ~/.tmux.conf
+cp "$DOT_DIR/tmux/scripts/continuum-save-status.sh" ~/.tmux/scripts/
+chmod +x ~/.tmux/scripts/continuum-save-status.sh
 cp "$DOT_DIR/tmux/tmux.conf" ~/.tmux.conf
 ```
 
@@ -169,7 +180,11 @@ cp "$DOT_DIR/tmux/tmux.conf" ~/.tmux.conf
 
 ```bash
 ls -la ~/.tmux.conf
+ls -la ~/.tmux/scripts/continuum-save-status.sh
+ls ~/.tmux/plugins/tpm/tpm
 ```
+
+首次进入 tmux 后按 `prefix + I` 安装配置中声明的插件。
 
 ---
 
