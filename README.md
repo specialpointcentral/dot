@@ -186,6 +186,46 @@ ls ~/.tmux/plugins/tpm/tpm
 
 首次进入 tmux 后按 `prefix + I` 安装配置中声明的插件。
 
+本配置包含 `samleeney/tmux-agent-status`，用于在 tmux 中跟踪 Claude Code 和 Codex
+agent 状态。插件默认会自动创建状态 sidebar，并把 agent 状态摘要追加到 tmux status line。
+`prefix + S` 的 target switcher 依赖 `fzf`；如果本机尚未安装，请先参考「可选工具」安装。
+
+常用按键：
+
+| 按键 | 功能 |
+|------|------|
+| `prefix + S` | 打开 agent target switcher |
+| `prefix + o` | 聚焦或创建 agent status sidebar |
+| `prefix + N` | 跳到下一个 ready/done agent |
+| `prefix + W` | 将当前 session/pane 设为 wait |
+| `prefix + p` | park 当前 session/pane |
+
+#### [自动] 配置 Claude Code hooks
+
+`claude/settings.json` 已包含 `tmux-agent-status` 的 Claude Code hooks，部署 Claude 配置时会
+同步到 `~/.claude/settings.json`。如果本机已有自定义 Claude Code 配置，确认 `hooks`
+中保留以下事件：
+
+- `UserPromptSubmit`
+- `PreToolUse`
+- `Stop`
+- `Notification`
+
+这些事件应调用 `~/.tmux/plugins/tmux-agent-status/hooks/better-hook.sh`。
+
+#### [自动] 配置 Codex hooks
+
+`codex/config.toml` 已包含：
+
+```toml
+[features]
+hooks = true
+```
+
+`codex/hooks.json` 已包含 `tmux-agent-status` 的 Codex hooks，部署 Codex 配置时会同步到
+`~/.codex/hooks.json`。重启 Codex 后，如 Codex 提示 hook command 需要 trust，运行 `/hooks`
+并信任新 hook 命令。
+
 ---
 
 ## Neovim 安装和配置
@@ -363,13 +403,14 @@ codex --version
 
 #### [自动] 创建目录、复制配置文件和认证模板
 
-创建 `~/.codex` 目录，复制 `config.toml` 配置文件。如果 `auth.json` 不存在，从模板复制并设置 `600` 权限。
+创建 `~/.codex` 目录，复制 `config.toml` 和 `hooks.json` 配置文件。如果 `auth.json` 不存在，从模板复制并设置 `600` 权限。
 
 ```bash
 mkdir -p ~/.codex
 [[ -e ~/.codex/config.toml && ! -L ~/.codex/config.toml ]] && mv ~/.codex/config.toml ~/.dot-backup/
 [[ -L ~/.codex/config.toml ]] && rm ~/.codex/config.toml
 cp "$DOT_DIR/codex/config.toml" ~/.codex/config.toml
+cp "$DOT_DIR/codex/hooks.json" ~/.codex/hooks.json
 
 if [[ ! -f ~/.codex/auth.json ]]; then
   cp "$DOT_DIR/codex/auth.json.example" ~/.codex/auth.json
@@ -388,7 +429,7 @@ vim ~/.codex/auth.json
 #### [检查] 确认文件和认证文件权限正确
 
 ```bash
-ls -la ~/.codex/config.toml ~/.codex/auth.json
+ls -la ~/.codex/config.toml ~/.codex/hooks.json ~/.codex/auth.json
 stat -c '%a' ~/.codex/auth.json 2>/dev/null || stat -f '%Lp' ~/.codex/auth.json
 ```
 
@@ -470,6 +511,7 @@ opencode auth
 |------|-------|-----------------|----------------|------|
 | conda (miniconda) | `brew install --cask miniconda` | [官方安装脚本](https://docs.conda.io/en/latest/miniconda.html) | [官方安装脚本](https://docs.conda.io/en/latest/miniconda.html) | Python 环境管理 |
 | rust / cargo | `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \| sh` | 同左 | 同左 | Rust 工具链 |
+| fzf | `brew install fzf` | `sudo apt install fzf` | `sudo pacman -S fzf` | tmux-agent-status target switcher |
 | docker | `brew install --cask docker` | [官方文档](https://docs.docker.com/engine/install/) | `sudo pacman -S docker` | 容器 |
 
 ## 密钥管理

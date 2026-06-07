@@ -9,6 +9,9 @@ preferred_auth_method = "apikey"
 [sandbox_workspace_write]
 network_access = true
 
+[features]
+hooks = true
+
 [model_providers.crs]
 name = "crs"
 # Set your base_url in ~/.codex/auth.json or environment variables
