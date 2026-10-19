@@ -328,11 +328,13 @@ mkdir -p ~/.agents/skills
 参考 `"$DOT_DIR/skills/README.md"` 安装以下 skills：
 
 - `agent-browser` — 浏览器自动化、网页测试、Electron 自动化
-- `simplify` — 简化和整理最近修改的代码
+- `code-simplifier` — 按项目规范整理最近修改的代码，已有同类能力时复用，见 [安装说明](skills/CODE-SIMPLIFIER.md)
 - `obsidian-cli` — 操作 Obsidian vault
 - `document-SKILLs` — Word / PDF / PPTX / XLSX 处理
+- `academic-research-suite` — 文献综述、论文写作、审稿和实验规划，见 [安装说明](skills/ACADEMIC-RESEARCH-SUITE.md)
+- `using-superpowers` / Superpowers — 开发流程入口及配套技能，见 [安装说明](skills/SUPERPOWERS.md)
 
-建议将实际技能安装到 `~/.agents/skills`，与当前机器保持一致。`document-SKILLs` 可以直接 clone 到 `~/.agents/skills/document-SKILLs`，其它单文件 skills 放到各自目录的 `SKILL.md`。
+建议将实际技能安装到 `~/.agents/skills`，与当前机器保持一致。`document-SKILLs` 可以直接 clone 到 `~/.agents/skills/document-SKILLs`。`academic-research-suite` 需复制完整技能包；Superpowers 逐个复制已批准的完整技能目录，不能只复制入口文件或默认安装全部内容。其它单文件 skills 按对应说明部署。
 
 #### [手动] 处理 Claude Code / Codex 兼容性
 
@@ -342,7 +344,7 @@ mkdir -p ~/.agents/skills
 
 ```bash
 mkdir -p ~/.claude/skills ~/.codex/skills
-for s in agent-browser simplify obsidian-cli; do
+for s in agent-browser obsidian-cli; do
   ln -snf ~/.agents/skills/$s ~/.claude/skills/$s
   ln -snf ~/.agents/skills/$s ~/.codex/skills/$s
 done
@@ -354,6 +356,8 @@ done
 ```
 
 `document-SKILLs` 需要按 `docx`、`pdf`、`pptx`、`xlsx` 分别链接，避免客户端只扫描一层 skill 目录时读不到。
+
+`code-simplifier`、ARS 和 Superpowers 的兼容方式以各自独立说明为准：`code-simplifier` 先检查并复用已有能力；ARS Codex 适配版不直接链接给 Claude；Superpowers 只链接已批准并已安装的技能，不覆盖已有同名入口。
 
 #### [检查] 确认 skills 已就位
 
