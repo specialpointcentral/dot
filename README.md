@@ -1,12 +1,32 @@
 # Dotfiles
 
-个人开发环境配置文件，支持快速恢复到新机器。本文件是手动安装的标准指南。
+个人开发环境配置文件，支持快速恢复到新机器。本文件提供各组件的安装步骤，既可手动参考，也可交给 Codex / Claude Code 执行。
+
+## 交给 AI 安装
+
+Agent 必须先读取 [AGENTS.md](AGENTS.md) 的统一流程：**只读检查 → 收集选择 → 生成计划并等待批准 → 执行与验证**。Claude Code 入口见 [CLAUDE.md](CLAUDE.md)。下文命令是步骤参考，不代表授权安装所有组件。
+
+在本仓库目录中启动 Agent，直接说：
+
+```text
+请根据本仓库配置我的开发环境。
+```
+
+如果通过 GitHub 链接交给 Agent，使用：
+
+```text
+请根据 https://github.com/specialpointcentral/dot 配置我的开发环境。
+```
+
+提问工具选择、Plan / Default 兼容、未回答时等待和最终计划批准规则统一维护在 `AGENTS.md`，无需在 prompt 中重复。Agent 读取本页后必须先读取该文件，再开展安装任务。
+
+## 安装步骤约定
 
 每个 Step 按三类操作分块：
 
-- **`[自动]`** — 可直接执行的命令，无需人工干预
-- **`[手动]`** — 需要人工交互（输入密码、编辑密钥等），不可由脚本自动完成
-- **`[检查]`** — 验证该步骤是否成功的命令
+- **`[自动]`** — 最终计划批准且模式允许后，可由 Agent 执行的步骤
+- **`[手动]`** — 需要用户交互（输入密码、登录、编辑密钥等），提示后等待用户完成
+- **`[检查]`** — 验证步骤；前期仅执行只读检查，有写入或下载行为的检查需纳入批准计划
 
 假定你已位于 dot 仓库根目录。先记录当前目录路径：
 
@@ -14,7 +34,7 @@
 DOT_DIR="$(pwd)"
 ```
 
-按以下章节从头完成环境搭建和配置部署。
+按最终批准的组件范围和步骤顺序执行以下章节，不默认安装整套环境。备份、移动文件、复制模板和创建链接也属于执行阶段。
 
 ---
 
@@ -119,15 +139,13 @@ vim ~/.secrets.zsh
 - `ANTHROPIC_BASE_URL` — Anthropic API 的基础 URL
 - `ANTHROPIC_AUTH_TOKEN` — Anthropic API 认证令牌
 
-##### Agent 协助填写
+##### Agent 协助说明字段
 
 如果由 AI Agent 执行本步骤，采用以下流程：
 
-1. Agent 向用户逐一询问所需字段的值：
-   - `ANTHROPIC_BASE_URL`
-   - `ANTHROPIC_AUTH_TOKEN`
-2. 用户回复后，Agent 将值写入 `~/.secrets.zsh`
-3. **安全要求**：Agent 不得在终端输出、对话回复中显示密钥明文；写入时使用 `chmod 600` 确保权限
+1. 规划时确认服务地址、认证方式，以及用户是否准备在执行阶段手动填写凭据，不询问真实 token。
+2. 最终计划批准后，Agent 按需创建模板并说明字段，用户在本机编辑 `~/.secrets.zsh`。
+3. Agent 等待用户完成回复，再检查文件是否存在及权限是否为 `600`，不读取或显示密钥值。
 
 #### [检查] 确认文件存在且权限为 600
 
@@ -475,7 +493,11 @@ cp "$DOT_DIR/opencode/oh-my-opencode-slim.json"  ~/.config/opencode/oh-my-openco
 - `provider.openai.options.apiKey` 默认是 `sk-xxxxxxxxxx`
 
 请将 `your-api-endpoint` 替换为你的实际服务地址，并将 `sk-xxxxxxxxxx` 替换为真实 API key。不要将真实 API key 提交到仓库。
-如果由 Agent 执行安装，请先提供你的实际地址和 API key，Agent 会代为修改，并避免在终端输出、对话回复中显示密钥明文。
+如果由 Agent 执行安装，规划时确认服务地址和认证方式；最终计划批准后，由用户在本机填写真实 API key，不粘贴到聊天或问答工具中。Agent 等待完成回复，再检查文件权限，不读取密钥值。包含真实 API key 的配置应设置为 `600`：
+
+```bash
+chmod 600 ~/.config/opencode/opencode.json
+```
 
 #### [自动] 安装 oh-my-opencode-slim 插件
 
@@ -530,8 +552,9 @@ opencode auth
 ```
 dot/
 ├── .gitignore
-├── README.md              # 手动安装标准指南
-├── AGENTS.md              # AI Agent 执行指引
+├── README.md              # AI 安装入口与组件安装步骤
+├── AGENTS.md              # 统一规划、提问、批准与执行规则
+├── CLAUDE.md              # Claude Code 入口，引用统一规则
 ├── shell/
 │   ├── zshrc              # Zsh 主配置
 │   ├── p10k.zsh           # Powerlevel10k 主题配置
